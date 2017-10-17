@@ -24,16 +24,8 @@
 
   <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.1.1/mapbox-gl-geocoder.min.js'></script>
   <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.1.1/mapbox-gl-geocoder.css' type='text/css' />
+
   <div id='map'></div>
-
-<!--   <style>
-  #geocoder-container > div {
-    min-width: 50%;
-    margin-left: 25%;
-  }
-    
-  </style> -->
-
   <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiZ2lubnlmYWhzIiwiYSI6ImNqOG92cTRyaDA5bmsyeHFjMGg1cWo0YnkifQ.XlPqNDAP-uP8af4mV3gNYg'; // 
     var map = new mapboxgl.Map({
@@ -47,48 +39,47 @@
 
     map.addControl(geocoder);
 
-    // map.on('load', function() {
-    //   map.addSource('single-point', {
-    //     "type": "geojson",
-    //     "data": {
-    //       "type": "FeatureCollection",
-    //       "features": []
-    //     }
-    //   });
+    map.on('load', function() {
+      map.addSource('single-point', {
+        "type": "geojson",
+        "data": {
+          "type": "FeatureCollection",
+          "features": []
+        }
+      });
 
-    // map.addLayer({
-    //   "id": "point",
-    //   "source": "single-point",
-    //   "type": "circle",
-    //   "paint": {
-    //     "circle-radius": 10,
-    //     "circle-color": "#007cbf"
-    //   }
-    // });
-
-  //   geocoder.on('result', function(ev) {
-  //     console.log('search happened');
-  //     map.getSource('single-point').setData(ev.result.geometry);
-  //   });
-  // });
-
-  map.on('click', function(e) {
-    var features = map.queryRenderedFeatures(e.point, {
-      layers: ['chicago-parks-gf-trial'] // replace this with the name of the layer
+    map.addLayer({
+      "id": "point",
+      "source": "single-point",
+      "type": "circle",
+      "paint": {
+        "circle-radius": 10,
+        "circle-color": "#007cbf"
+      }
     });
 
-    if (!features.length) {
-      return;
-    }
-
-    var feature = features[0];
-
-    var popup = new mapboxgl.Popup({ offset: [0, -15] })
-      .setLngLat(feature.geometry.coordinates)
-      .setHTML('<h3>' + feature.properties.title + '</h3><p>' + feature.properties.description + '</p>')
-      .setLngLat(feature.geometry.coordinates)
-      .addTo(map);
+    geocoder.on('result', function(ev) {
+      map.getSource('single-point').setData(ev.result.geometry);
+    });
   });
+
+  // map.on('click', function(e) {
+  //   var features = map.queryRenderedFeatures(e.point, {
+  //     layers: ['chicago-parks-gf-trial'] // replace this with the name of the layer
+  //   });
+
+  //   if (!features.length) {
+  //     return;
+  //   }
+
+  //   var feature = features[0];
+
+  //   var popup = new mapboxgl.Popup({ offset: [0, -15] })
+  //     .setLngLat(feature.geometry.coordinates)
+  //     .setHTML('<h3>' + feature.properties.title + '</h3><p>' + feature.properties.description + '</p>')
+  //     .setLngLat(feature.geometry.coordinates)
+  //     .addTo(map);
+  // });
 
     </script>
   </body>
